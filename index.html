@@ -1,217 +1,204 @@
 <!DOCTYPE html>
 <html lang="tr" data-theme="dark">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>YT Shorts Kanal Yöneticisi</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #0b0c0f; --panel: #111319; --panel-2: #151824;
-  --txt: #e8e8ec; --muted: #a1a1b2; --accent: #7c5cff;
-  --chip: #222538; --chip-border: #2a2e45;
-  --shadow: 0 10px 30px rgba(0,0,0,.35);
-}
-[data-theme="light"] {
-  --bg: #f7f8fb; --panel: #ffffff; --panel-2: #f2f4ff;
-  --txt: #0d0d12; --muted:#57576a; --accent:#5b36ff;
-  --chip:#eef0ff; --chip-border:#dee1ff;
-  --shadow: 0 10px 25px rgba(16,24,40,.08);
-}
-*{box-sizing:border-box}
-body{
-  margin:0;min-height:100%;
-  background: radial-gradient(1200px 700px at 20% -10%, rgba(124,92,255,.15), transparent 40%),
-             radial-gradient(900px 600px at 120% 20%, rgba(18,196,139,.12), transparent 50%),
-             var(--bg);
-  color:var(--txt); font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
-}
-.container{max-width:1200px;margin:0 auto;padding:28px}
-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-.brand{display:flex;align-items:center;gap:14px}
-.logo{width:42px;height:42px;border-radius:12px;
-      background:linear-gradient(135deg, var(--accent), #12c48b);
-      display:grid;place-items:center; box-shadow:var(--shadow)}
-h1{font-family:Poppins,sans-serif;font-weight:900;margin:0;font-size:24px}
-.actions{display:flex;gap:10px;align-items:center}
-button{border:0;border-radius:14px;padding:12px 16px;font-weight:600;
-       cursor:pointer;transition:.25s;background:var(--accent);color:white;box-shadow:var(--shadow)}
-button:hover{transform:translateY(-1px)}
-.ghost{background:var(--panel);color:var(--txt);border:1px solid #2b2f43}
-.ghost:hover{background:var(--panel-2)}
-.switch{width:54px;height:32px;background:#1a1d2e;border-radius:999px;
-        border:1px solid #2b2f43;position:relative;cursor:pointer}
-.switch::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;
-               border-radius:50%;background:#fff;transition:.25s}
-[data-theme="light"] .switch{background:#ecebff;border-color:#cfd2ff}
-[data-theme="light"] .switch::after{left:25px;background:#0d0d12}
-.grid{display:grid;gap:16px}
-@media(min-width:780px){.grid{grid-template-columns:repeat(12,1fr)}}
-.card{grid-column:span 12;background:var(--panel);border:1px solid #23263a;
-      border-radius:22px;box-shadow:var(--shadow);overflow:hidden;position:relative}
-.card-inner{display:grid;grid-template-columns:1fr;gap:16px;padding:18px}
-@media(min-width:780px){.card-inner{grid-template-columns:1.2fr 2fr}}
-.left{display:flex;gap:14px;align-items:center}
-.avatar{width:72px;height:72px;border-radius:18px;overflow:hidden;
-        background:#0f111b;border:1px solid #2b2f43;flex:0 0 auto}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.title{display:flex;flex-direction:column;gap:6px}
-.name{font-family:Poppins,sans-serif;font-weight:800;font-size:20px}
-.sub{color:var(--muted);font-size:13px}
-.right{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-       gap:12px;align-items:flex-start}
-@media(min-width:920px){.right{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.kv{background:var(--panel-2);border:1px solid #23263a;padding:12px;
-    border-radius:16px;display:flex;flex-direction:column;gap:6px}
-.kv label{font-size:11px;color:var(--muted)}
-.kv span{font-weight:700}
-.lang-chip{display:inline-flex;align-items:center;border-radius:16px;
-          padding:6px 10px;font-weight:700;font-size:12px}
-.lang-tr{background:#2a0d0d;color:#ff4d4f;border:1px solid #3a1515}
-.lang-es{background:#0f2a12;color:#22c55e;border:1px solid #173b1b}
-.lang-en{background:#0d133a;color:#60a5fa;border:1px solid #182055}
-.lang-pt{background:#2a0d0d;color:#ff4d4f;border:1px solid #3a1515}
-.lang-other{background:#231b2a;color:#c084fc;border:1px solid #2f2440}
-.empty{grid-column:span 12;border:1px dashed #2b2f43;border-radius:20px;
-       padding:30px;display:grid;place-items:center;color:var(--muted);
-       background:var(--panel)}
-dialog{border:0;border-radius:20px;width:min(720px,94vw);
-       background:var(--panel);color:var(--txt);box-shadow:var(--shadow)}
-.modal-head{display:flex;align-items:center;justify-content:space-between;
-            padding:16px 18px;border-bottom:1px solid #23263a}
-.modal-body{padding:18px;display:grid;gap:14px}
-.field{display:flex;flex-direction:column;gap:8px}
-input,select,textarea{width:100%;padding:12px;border-radius:12px;
-    border:1px solid #2b2f43;background:var(--panel-2);color:var(--txt);font:inherit}
-textarea{min-height:90px;resize:vertical}
-.modal-actions{display:flex;justify-content:flex-end;gap:10px;
-               padding:16px 18px;border-top:1px solid #23263a}
-.appear{animation:pop .45s ease var(--delay,0s) both}
-@keyframes pop{0%{opacity:0;transform:translateY(6px) scale(.98)}
-              100%{opacity:1;transform:none}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YT Shorts Kanal Yöneticisi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0b0c0f; --panel:#111319; --panel-2:#151824; --txt:#e8e8ec; --muted:#a1a1b2;
+      --accent:#7c5cff; --chip:#222538; --chip-border:#2a2e45; --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    [data-theme="light"]{
+      --bg:#f7f8fb; --panel:#fff; --panel-2:#f2f4ff; --txt:#0d0d12; --muted:#57576a;
+      --accent:#5b36ff; --chip:#eef0ff; --chip-border:#dee1ff; --shadow:0 10px 25px rgba(16,24,40,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;min-height:100%;
+      background:radial-gradient(1200px 700px at 20% -10%, rgba(124,92,255,.15), transparent 40%),
+                 radial-gradient(900px 600px at 120% 20%, rgba(18,196,139,.12), transparent 50%), var(--bg);
+      color:var(--txt);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+    }
+    .container{max-width:1200px;margin:0 auto;padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#12c48b);
+      display:grid;place-items:center;box-shadow:var(--shadow)}
+    h1{margin:0;font-family:Poppins,sans-serif;font-weight:900;font-size:24px}
+    .actions{display:flex;gap:10px;align-items:center}
+    button{border:0;border-radius:14px;padding:12px 16px;font-weight:600;cursor:pointer;transition:.25s;background:var(--accent);color:#fff;box-shadow:var(--shadow)}
+    button:hover{transform:translateY(-1px)}
+    .ghost{background:var(--panel);color:var(--txt);border:1px solid #2b2f43}
+    .ghost:hover{background:var(--panel-2)}
+    .switch{width:54px;height:32px;background:#1a1d2e;border-radius:999px;border:1px solid #2b2f43;position:relative;cursor:pointer}
+    .switch::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;transition:.25s}
+    [data-theme="light"] .switch{background:#ecebff;border-color:#cfd2ff}
+    [data-theme="light"] .switch::after{left:25px;background:#0d0d12}
+    .grid{display:grid;gap:16px}
+    @media(min-width:780px){.grid{grid-template-columns:repeat(12,1fr)}}
+    .card{grid-column:span 12;background:var(--panel);border:1px solid #23263a;border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+    .card-inner{display:grid;grid-template-columns:1fr;gap:16px;padding:18px}
+    @media(min-width:780px){.card-inner{grid-template-columns:1.2fr 2fr}}
+    .left{display:flex;gap:14px;align-items:center}
+    .avatar{width:72px;height:72px;border-radius:18px;overflow:hidden;background:#0f111b;border:1px solid #2b2f43;flex:0 0 auto}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .title{display:flex;flex-direction:column;gap:6px}
+    .name{font-family:Poppins,sans-serif;font-weight:800;font-size:20px}
+    .sub{color:var(--muted);font-size:13px}
+    .right{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    @media(min-width:920px){.right{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    .kv{background:var(--panel-2);border:1px solid #23263a;padding:12px;border-radius:16px;display:flex;flex-direction:column;gap:6px}
+    .kv label{font-size:11px;color:var(--muted)}
+    .kv span{font-weight:700}
+    .lang-chip{display:inline-flex;align-items:center;border-radius:16px;padding:6px 10px;font-weight:700;font-size:12px}
+    .lang-tr{background:#2a0d0d;color:#ff4d4f;border:1px solid #3a1515}
+    .lang-es{background:#0f2a12;color:#22c55e;border:1px solid #173b1b}
+    .lang-en{background:#0d133a;color:#60a5fa;border:1px solid #182055}
+    .lang-pt{background:#2a0d0d;color:#ff4d4f;border:1px solid #3a1515}
+    .lang-other{background:#231b2a;color:#c084fc;border:1px solid #2f2440}
+    .empty{grid-column:span 12;border:1px dashed #2b2f43;border-radius:20px;padding:30px;display:grid;place-items:center;color:var(--muted);background:var(--panel)}
+    dialog{border:0;border-radius:20px;width:min(720px,94vw);background:var(--panel);color:var(--txt);box-shadow:var(--shadow)}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid #23263a}
+    .modal-body{padding:18px;display:grid;gap:14px}
+    .field{display:flex;flex-direction:column;gap:8px}
+    input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid #2b2f43;background:var(--panel-2);color:var(--txt);font:inherit}
+    textarea{min-height:90px;resize:vertical}
+    .modal-actions{display:flex;justify-content:flex-end;gap:10px;padding:16px 18px;border-top:1px solid #23263a}
+    .appear{animation:pop .45s ease var(--delay,0s) both}
+    @keyframes pop{0%{opacity:0;transform:translateY(6px) scale(.98)}100%{opacity:1;transform:none}}
+  </style>
 </head>
 <body>
-<div class="container">
-  <header>
-    <div class="brand">
-      <div class="logo">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-          <path d="M10.5 7.5L16 12l-5.5 4.5V7.5z" fill="#fff"/>
-          <rect x="2" y="4" width="20" height="16" rx="4" stroke="#fff" opacity=".3"/>
-        </svg>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+            <path d="M10.5 7.5L16 12l-5.5 4.5V7.5z" fill="#fff"/>
+            <rect x="2" y="4" width="20" height="16" rx="4" stroke="#fff" opacity=".3"/>
+          </svg>
+        </div>
+        <h1>YT Shorts Kanal Yöneticisi</h1>
       </div>
-      <h1>YT Shorts Kanal Yöneticisi</h1>
-    </div>
-    <div class="actions">
-      <span class="small">Koyu / Açık</span>
-      <div class="switch" id="themeSwitch"></div>
-      <button id="filterBtn" class="ghost">Filtrele</button>
-      <button id="addBtn">+ Kanal Ekle</button>
-    </div>
-  </header>
+      <div class="actions">
+        <span class="small">Koyu / Açık</span>
+        <div class="switch" id="themeSwitch"></div>
+        <button id="filterBtn" class="ghost">Filtrele</button>
+        <button id="addBtn">+ Kanal Ekle</button>
+      </div>
+    </header>
 
-  <section id="cards" class="grid"></section>
-  <div id="empty" class="empty" style="display:none">Henüz kanal eklenmedi.</div>
+    <section id="cards" class="grid"></section>
+    <div id="empty" class="empty" style="display:none">Henüz kanal eklenmedi.</div>
 
-  <!-- Kanal Ekle Modal -->
-  <dialog id="modalAdd">
-    <form id="modalForm" method="dialog">
-      <div class="modal-head">
-        <strong>Kanal Ekle</strong>
-        <button class="ghost" id="closeModalAdd" type="button">Kapat</button>
-      </div>
-      <div class="modal-body">
-        <div class="field">
-          <label>Kanal Linki</label>
-          <input id="f_url" type="url" required placeholder="https://www.youtube.com/channel/UC..." />
+    <!-- Kanal Ekle Modal -->
+    <dialog id="modalAdd">
+      <form id="modalForm" method="dialog">
+        <div class="modal-head">
+          <strong>Kanal Ekle</strong>
+          <button class="ghost" id="closeModalAdd" type="button">Kapat</button>
         </div>
-        <div class="field">
-          <label>Dil</label>
-          <select id="f_lang" required>
-            <option value="tr">Türkçe</option><option value="en">İngilizce</option>
-            <option value="es">İspanyolca</option><option value="pt">Portekizce</option>
-            <option value="other">Diğer</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>CTA</label>
-          <select id="f_cta" required>
-            <option value="with">CTAlı</option>
-            <option value="without">CTAsız</option>
-            <option value="both">İkisi de</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Notlar</label>
-          <textarea id="f_notes"></textarea>
-        </div>
-      </div>
-      <div class="modal-actions">
-        <button class="ghost" type="reset">Temizle</button>
-        <button type="submit">Kaydet</button>
-      </div>
-    </form>
-  </dialog>
-
-  <!-- Filtre Modal -->
-  <dialog id="modalFilter">
-    <form id="filterForm" method="dialog">
-      <div class="modal-head">
-        <strong>Filtreler</strong>
-        <button class="ghost" id="closeModalFilter" type="button">Kapat</button>
-      </div>
-      <div class="modal-body">
-        <div class="field"><label>Min Abone</label><input type="number" id="minSubs"></div>
-        <div class="field"><label>Max Abone</label><input type="number" id="maxSubs"></div>
-        <div class="field"><label>Min İzlenme</label><input type="number" id="minViews"></div>
-        <div class="field"><label>Max İzlenme</label><input type="number" id="maxViews"></div>
-        <div class="field"><label>Dil</label>
-          <select id="filterLang">
-            <option value="">Hepsi</option><option value="tr">Türkçe</option>
-            <option value="en">İngilizce</option><option value="es">İspanyolca</option>
-            <option value="pt">Portekizce</option><option value="other">Diğer</option>
-          </select>
-        </div>
-        <div class="field"><label>CTA</label>
-          <select id="filterCta">
-            <option value="">Hepsi</option><option value="with">CTAlı</option>
-            <option value="without">CTAsız</option><option value="both">İkisi de</option>
-          </select>
-        </div>
-      </div>
-      <div class="modal-actions">
-        <button class="ghost" type="reset">Sıfırla</button>
-        <button type="submit">Uygula</button>
-      </div>
-    </form>
-  </dialog>
-
-  <template id="cardTpl">
-    <article class="card appear">
-      <div class="card-inner">
-        <div class="left">
-          <div class="avatar"><img alt="logo"></div>
-          <div class="title">
-            <div class="name"></div>
-            <div class="sub"></div>
+        <div class="modal-body">
+          <div class="field">
+            <label>Kanal Linki</label>
+            <input id="f_url" type="url" required placeholder="https://www.youtube.com/channel/UC... veya https://www.youtube.com/@handle"/>
+          </div>
+          <div class="field">
+            <label>Dil</label>
+            <select id="f_lang" required>
+              <option value="tr">Türkçe</option>
+              <option value="en">İngilizce</option>
+              <option value="es">İspanyolca</option>
+              <option value="pt">Portekizce</option>
+              <option value="other">Diğer</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>CTA</label>
+            <select id="f_cta" required>
+              <option value="with">CTAlı</option>
+              <option value="without">CTAsız</option>
+              <option value="both">İkisi de</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Notlar</label>
+            <textarea id="f_notes" placeholder="Örn: Sadece shorts, ürün linki var..."></textarea>
           </div>
         </div>
-        <div class="right">
-          <div class="kv"><label>Dil</label><span class="lang place"></span></div>
-          <div class="kv"><label>CTA</label><span class="cta"></span></div>
-          <div class="kv"><label>Toplam İzlenme</label><span class="views"></span></div>
-          <div class="kv"><label>Notlar</label><span class="notes"></span></div>
+        <div class="modal-actions">
+          <button class="ghost" type="reset">Temizle</button>
+          <button type="submit">Kaydet</button>
         </div>
-      </div>
-    </article>
-  </template>
-</div>
+      </form>
+    </dialog>
 
-<script type="module">
-const FIREBASE_CONFIG = {
+    <!-- Filtre Modal -->
+    <dialog id="modalFilter">
+      <form id="filterForm" method="dialog">
+        <div class="modal-head">
+          <strong>Filtreler</strong>
+          <button class="ghost" id="closeModalFilter" type="button">Kapat</button>
+        </div>
+        <div class="modal-body">
+          <div class="field"><label>Min Abone</label><input type="number" id="minSubs"></div>
+          <div class="field"><label>Max Abone</label><input type="number" id="maxSubs"></div>
+          <div class="field"><label>Min İzlenme</label><input type="number" id="minViews"></div>
+          <div class="field"><label>Max İzlenme</label><input type="number" id="maxViews"></div>
+          <div class="field"><label>Dil</label>
+            <select id="filterLang">
+              <option value="">Hepsi</option>
+              <option value="tr">Türkçe</option>
+              <option value="en">İngilizce</option>
+              <option value="es">İspanyolca</option>
+              <option value="pt">Portekizce</option>
+              <option value="other">Diğer</option>
+            </select>
+          </div>
+          <div class="field"><label>CTA</label>
+            <select id="filterCta">
+              <option value="">Hepsi</option>
+              <option value="with">CTAlı</option>
+              <option value="without">CTAsız</option>
+              <option value="both">İkisi de</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="ghost" type="reset">Sıfırla</button>
+          <button type="submit">Uygula</button>
+        </div>
+      </form>
+    </dialog>
+
+    <template id="cardTpl">
+      <article class="card appear">
+        <div class="card-inner">
+          <div class="left">
+            <div class="avatar"><img alt="logo"></div>
+            <div class="title">
+              <div class="name"></div>
+              <div class="sub"></div>
+            </div>
+          </div>
+          <div class="right">
+            <div class="kv"><label>Dil</label><span class="lang place"></span></div>
+            <div class="kv"><label>CTA</label><span class="cta"></span></div>
+            <div class="kv"><label>Toplam İzlenme</label><span class="views"></span></div>
+            <div class="kv"><label>Notlar</label><span class="notes"></span></div>
+          </div>
+        </div>
+      </article>
+    </template>
+  </div>
+
+  <script type="module">
+    /* ==== CONFIG ==== */
+    const FIREBASE_CONFIG = {
     apiKey: "AIzaSyBMpRjGJC_lKEIyEvCCvxplCyj8PkU-VXY",
     authDomain: "shortssayt-b3a02.firebaseapp.com",
     projectId: "shortssayt-b3a02",
@@ -219,107 +206,157 @@ const FIREBASE_CONFIG = {
     messagingSenderId: "991052730765",
     appId: "1:991052730765:web:0e3ad7513c2452ea99adc4"
 };
-const YT_API_KEY = "YOUR_YOUTUBE_DATA_API_KEY";
+    const YT_API_KEY = "AIzaSyCtw_vK-v4WFXqhoKLmimhFNHoQgJ6r48g";
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getFirestore, collection, getDocs, setDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+    /* ==== Firebase SDK ==== */
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getFirestore, collection, setDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
 
-const app = initializeApp(FIREBASE_CONFIG);
-const db = getFirestore(app);
-const auth = getAuth(app);
+    const app = initializeApp(FIREBASE_CONFIG);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-const el = (s,r=document)=>r.querySelector(s);
-const formatNumber=n=>Intl.NumberFormat('tr-TR',{notation:n>1_000_000?'compact':'standard'}).format(n);
-function langChip(l){const m={tr:['lang-tr','Türkçe'],es:['lang-es','İspanyolca'],en:['lang-en','İngilizce'],pt:['lang-pt','Portekizce']};const [c,t]=m[l]||['lang-other','Diğer'];const s=document.createElement('span');s.className=`lang-chip ${c}`;s.textContent=t;return s;}
+    /* ==== Helpers ==== */
+    const el = (s, r=document)=>r.querySelector(s);
+    const formatNumber = n => Intl.NumberFormat('tr-TR',{notation:n>1_000_000?'compact':'standard'}).format(n);
 
-const state={theme:localStorage.getItem('theme')||'dark',docs:[],filters:{}};
-function applyTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);}
-applyTheme(state.theme);
-el('#themeSwitch').onclick=()=>applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');
+    function langChip(code){
+      const map = { tr:['lang-tr','Türkçe'], es:['lang-es','İspanyolca'], en:['lang-en','İngilizce'], pt:['lang-pt','Portekizce'] };
+      const [cls, label] = map[code] || ['lang-other','Diğer'];
+      const span = document.createElement('span');
+      span.className = `lang-chip ${cls}`;
+      span.textContent = label;
+      return span;
+    }
 
-const modalAdd=el('#modalAdd'), modalFilter=el('#modalFilter');
-el('#addBtn').onclick=()=>modalAdd.showModal();
-el('#closeModalAdd').onclick=()=>modalAdd.close();
-el('#filterBtn').onclick=()=>modalFilter.showModal();
-el('#closeModalFilter').onclick=()=>modalFilter.close();
+    const state = { theme: localStorage.getItem('theme') || 'dark', docs: [], filters: {} };
+    function applyTheme(t){ document.documentElement.setAttribute('data-theme', t); localStorage.setItem('theme', t); }
+    applyTheme(state.theme);
+    el('#themeSwitch').onclick = () => applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');
 
-el('#modalForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  const url=el('#f_url').value.trim();
-  const meta=await fetchChannelMeta(url);
-  if(!meta){alert('Kanal bulunamadı');return;}
-  await setDoc(doc(collection(db,'channels'),meta.id),{
-    url,language:el('#f_lang').value,cta:el('#f_cta').value,notes:el('#f_notes').value.trim(),
-    stats:meta.stats,snippet:meta.snippet,lastFetched:Date.now(),createdAt:Date.now()
-  },{merge:true});
-  e.target.reset();modalAdd.close();
-});
+    /* ==== Modals ==== */
+    const modalAdd = el('#modalAdd'), modalFilter = el('#modalFilter');
+    el('#addBtn').onclick = () => modalAdd.showModal();
+    el('#closeModalAdd').onclick = () => modalAdd.close();
+    el('#filterBtn').onclick = () => modalFilter.showModal();
+    el('#closeModalFilter').onclick = () => modalFilter.close();
 
-el('#filterForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  state.filters={
-    minSubs:+el('#minSubs').value||0,
-    maxSubs:+el('#maxSubs').value||Infinity,
-    minViews:+el('#minViews').value||0,
-    maxViews:+el('#maxViews').value||Infinity,
-    lang:el('#filterLang').value,
-    cta:el('#filterCta').value
-  };
-  modalFilter.close();
-  mount(state.docs);
-});
-el('#filterForm').addEventListener('reset',()=>{state.filters={};});
+    /* ==== Add Channel ==== */
+    el('#modalForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const url = el('#f_url').value.trim();
+      const meta = await fetchChannelMeta(url);
+      if(!meta){ alert('Kanal bulunamadı.'); return; }
+      await setDoc(doc(collection(db,'channels'), meta.id), {
+        url,
+        language: el('#f_lang').value,
+        cta: el('#f_cta').value,
+        notes: el('#f_notes').value.trim(),
+        stats: meta.stats,
+        snippet: meta.snippet,
+        lastFetched: Date.now(),
+        createdAt: Date.now()
+      }, { merge: true });
+      e.target.reset(); modalAdd.close();
+    });
 
-const cards=el('#cards'), empty=el('#empty');
-function render(docSnap,i){
-  const d=docSnap.data();
-  const n=el('#cardTpl').content.firstElementChild.cloneNode(true);
-  n.style.setProperty('--delay',`${i*0.03}s`);
-  el('img',n).src=d?.snippet?.thumbnails?.medium?.url||'';
-  el('.name',n).textContent=d?.snippet?.title||'—';
-  el('.sub',n).textContent=d?.stats?.subscriberCount?`${formatNumber(+d.stats.subscriberCount)} abone`:'—';
-  const l=el('.lang.place',n);l.innerHTML='';l.appendChild(langChip(d.language||'other'));
-  el('.cta',n).textContent=d.cta==='with'?'CTAlı':d.cta==='without'?'CTAsız':'İkisi de';
-  el('.views',n).textContent=d?.stats?.viewCount?formatNumber(+d.stats.viewCount):'—';
-  el('.notes',n).textContent=d?.notes||'—';
-  return n;
-}
-function passFilters(d){
-  const f=state.filters;
-  const subs=+d.stats.subscriberCount||0, views=+d.stats.viewCount||0;
-  if(f.minSubs && subs<f.minSubs) return false;
-  if(f.maxSubs!==Infinity && subs>f.maxSubs) return false;
-  if(f.minViews && views<f.minViews) return false;
-  if(f.maxViews!==Infinity && views>f.maxViews) return false;
-  if(f.lang && d.language!==f.lang) return false;
-  if(f.cta && d.cta!==f.cta) return false;
-  return true;
-}
-function mount(list){
-  cards.innerHTML='';
-  const arr=list.filter(s=>passFilters(s.data()));
-  if(arr.length===0){empty.style.display='grid';return;}
-  empty.style.display='none';
-  arr.forEach((s,i)=>cards.appendChild(render(s,i)));
-}
+    /* ==== Filters ==== */
+    el('#filterForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      state.filters = {
+        minSubs: +el('#minSubs').value || 0,
+        maxSubs: +el('#maxSubs').value || Infinity,
+        minViews: +el('#minViews').value || 0,
+        maxViews: +el('#maxViews').value || Infinity,
+        lang: el('#filterLang').value,
+        cta: el('#filterCta').value
+      };
+      modalFilter.close();
+      mount(state.docs);
+    });
+    el('#filterForm').addEventListener('reset', ()=>{
+      state.filters = {};
+    });
 
-async function fetchChannelMeta(link){
-  const id=extractChannelId(link) || await handleToId(link);
-  if(!id) return null;
-  const r=await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${id}&key=${YT_API_KEY}`);
-  const j=await r.json(); const item=j?.items?.[0];
-  if(!item) return null;
-  return {id,snippet:item.snippet,stats:item.statistics};
-}
-function extractChannelId(u){try{const x=new URL(u);const p=x.pathname.split('/').filter(Boolean);if(p[0]==='channel')return p[1];}catch{} if(/^UC[\\w-]{20,}$/.test(u))return u;return null;}
-async function handleToId(u){const m=u.match(/@([\\w\\-.]+)/);if(!m)return null;const h='@'+m[1];const r=await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&maxResults=1&q=${encodeURIComponent(h)}&key=${YT_API_KEY}`);const j=await r.json();return j?.items?.[0]?.snippet?.channelId||j?.items?.[0]?.id?.channelId;}
+    const cards = el('#cards'), empty = el('#empty');
 
-signInAnonymously(auth);
-onAuthStateChanged(auth,()=>{
-  const q=query(collection(db,'channels'),orderBy('createdAt','desc'));
-  onSnapshot(q,snap=>{state.docs=snap.docs;mount(state.docs);});
-});
-</script>
+    function render(docSnap,i){
+      const d = docSnap.data();
+      const node = el('#cardTpl').content.firstElementChild.cloneNode(true);
+      node.style.setProperty('--delay', `${i*0.03}s`);
+      el('img', node).src = d?.snippet?.thumbnails?.medium?.url || d?.snippet?.thumbnails?.default?.url || '';
+      el('.name', node).textContent = d?.snippet?.title || '—';
+      el('.sub', node).textContent = d?.stats?.subscriberCount ? `${formatNumber(+d.stats.subscriberCount)} abone` : '—';
+      const l = el('.lang.place', node); l.innerHTML=''; l.appendChild(langChip(d.language||'other'));
+      el('.cta', node).textContent = d.cta==='with'?'CTAlı':d.cta==='without'?'CTAsız':'İkisi de';
+      el('.views', node).textContent = d?.stats?.viewCount ? formatNumber(+d.stats.viewCount) : '—';
+      el('.notes', node).textContent = d?.notes || '—';
+      return node;
+    }
+
+    function passFilters(data){
+      const f = state.filters;
+      const subs = +data?.stats?.subscriberCount || 0;
+      const views = +data?.stats?.viewCount || 0;
+      if(f.minSubs && subs < f.minSubs) return false;
+      if(f.maxSubs !== Infinity && subs > f.maxSubs) return false;
+      if(f.minViews && views < f.minViews) return false;
+      if(f.maxViews !== Infinity && views > f.maxViews) return false;
+      if(f.lang && data.language !== f.lang) return false;
+      if(f.cta && data.cta !== f.cta) return false;
+      return true;
+    }
+
+    function mount(list){
+      cards.innerHTML = '';
+      const arr = list.filter(s => passFilters(s.data()));
+      if(arr.length === 0){ empty.style.display='grid'; return; }
+      empty.style.display='none';
+      arr.forEach((s,i)=> cards.appendChild(render(s,i)));
+    }
+
+    /* ==== YouTube Helpers ==== */
+    async function fetchChannelMeta(link){
+      const id = extractChannelId(link) || await handleToId(link);
+      if(!id) return null;
+      const res = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${id}&key=${YT_API_KEY}`);
+      const json = await res.json();
+      const item = json?.items?.[0];
+      if(!item) return null;
+      return { id, snippet: item.snippet, stats: item.statistics };
+    }
+
+    function extractChannelId(u){
+      try{
+        const x = new URL(u);
+        const p = x.pathname.split('/').filter(Boolean);
+        if(p[0] === 'channel' && p[1]) return p[1];
+      }catch{}
+      // doğrudan UC… id verilmiş olabilir
+      if(/^UC[A-Za-z0-9_-]{20,}$/.test(u)) return u;
+      return null;
+    }
+
+    function handleFromString(u){
+      const s = String(u);
+      const m = s.match(/@([A-Za-z0-9._-]+)/);
+      return m ? '@' + m[1] : null;
+    }
+    async function handleToId(u){
+      const h = handleFromString(u);
+      if(!h) return null;
+      const r = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&maxResults=1&q=${encodeURIComponent(h)}&key=${YT_API_KEY}`);
+      const j = await r.json();
+      return j?.items?.[0]?.snippet?.channelId || j?.items?.[0]?.id?.channelId || null;
+    }
+
+    /* ==== Live ==== */
+    signInAnonymously(auth);
+    onAuthStateChanged(auth, ()=>{
+      const q = query(collection(db,'channels'), orderBy('createdAt','desc'));
+      onSnapshot(q, snap => { state.docs = snap.docs; mount(state.docs); });
+    });
+  </script>
 </body>
 </html>
