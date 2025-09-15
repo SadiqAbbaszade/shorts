@@ -176,7 +176,6 @@
     </dialog>
 
     <template id="cardTpl">
-      <button class="ghost delete-btn">Sil</button>
       <article class="card appear">
         <div class="card-inner">
           <div class="left">
@@ -213,8 +212,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
     import { getFirestore, collection, setDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
     import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
-    import { getFirestore, collection, setDoc, doc, onSnapshot, query, orderBy, deleteDoc }
-      from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
     const app = initializeApp(FIREBASE_CONFIG);
     const db = getFirestore(app);
     const auth = getAuth(app);
@@ -283,17 +281,19 @@
 
     const cards = el('#cards'), empty = el('#empty');
 
-   function render(docSnap,i){
-  const d = docSnap.data();
-  // ... mevcut kodlar ...
-  const delBtn = node.querySelector('.delete-btn');
-  delBtn.onclick = async () => {
-    if(confirm(`${d?.snippet?.title} kanalını silmek istediğinize emin misiniz?`)){
-      await deleteDoc(doc(db, 'channels', docSnap.id));
+    function render(docSnap,i){
+      const d = docSnap.data();
+      const node = el('#cardTpl').content.firstElementChild.cloneNode(true);
+      node.style.setProperty('--delay', `${i*0.03}s`);
+      el('img', node).src = d?.snippet?.thumbnails?.medium?.url || d?.snippet?.thumbnails?.default?.url || '';
+      el('.name', node).textContent = d?.snippet?.title || '—';
+      el('.sub', node).textContent = d?.stats?.subscriberCount ? `${formatNumber(+d.stats.subscriberCount)} abone` : '—';
+      const l = el('.lang.place', node); l.innerHTML=''; l.appendChild(langChip(d.language||'other'));
+      el('.cta', node).textContent = d.cta==='with'?'CTAlı':d.cta==='without'?'CTAsız':'İkisi de';
+      el('.views', node).textContent = d?.stats?.viewCount ? formatNumber(+d.stats.viewCount) : '—';
+      el('.notes', node).textContent = d?.notes || '—';
+      return node;
     }
-  };
-  return node;
-}
 
     function passFilters(data){
       const f = state.filters;
